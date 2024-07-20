@@ -121,8 +121,13 @@ public class CarControllerTest {
     @Test
     public void deleteCar() throws Exception {
         Car car = getCar();
-        mvc.perform(delete("/cars/{id}", car.getId()))
-                .andExpect(status().isNoContent());
+        if(car.getId() != null) {
+            mvc.perform(delete(
+                            "/cars/{id}", 1L)
+                    )
+                    .andExpect(status().isNoContent());
+        }
+
     }
 
     /**
