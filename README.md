@@ -17,6 +17,9 @@ java -jar target/eureka-server-0.0.1-SNAPSHOT.jar
 java -jar target/pricing-service-0.0.1-SNAPSHOT.jar
 java -jar target/vehicles-api-0.0.1-SNAPSHOT.jar
 
+If any issue related to no main manifest, use this in project
+mvn package spring-boot:repackage
+
 
 ## Dependencies
 
