@@ -4,9 +4,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -89,6 +87,25 @@ public class CarControllerTest {
     }
 
     /**
+     * Tests for successful creation of new car in the system
+     *
+     * @throws Exception when car creation fails in the system
+     */
+    @Test
+    public void updateCar() throws Exception {
+        Car updatedCar = getCar();
+        updatedCar.setId(1L);
+        updatedCar.setCondition(Condition.NEW);
+
+        mvc.perform(
+                        put("/cars/{id}", updatedCar.getId())
+                                .content(json.write(updatedCar).getJson())
+                                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                                .accept(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk());
+    }
+
+    /**
      * Tests if the read operation appropriately returns a list of vehicles.
      *
      * @throws Exception if the read operation of the vehicle list fails
@@ -121,7 +138,7 @@ public class CarControllerTest {
     @Test
     public void deleteCar() throws Exception {
         Car car = getCar();
-        if(car.getId() != null) {
+        if (car.getId() != null) {
             mvc.perform(delete(
                             "/cars/{id}", 1L)
                     )

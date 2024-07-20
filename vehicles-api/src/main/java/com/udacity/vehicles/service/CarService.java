@@ -10,6 +10,8 @@ import java.util.Optional;
 import com.udacity.vehicles.domain.manufacturer.ManufacturerRepository;
 import org.springframework.stereotype.Service;
 
+import static org.springframework.beans.BeanUtils.copyProperties;
+
 /**
  * Implements the car service create, read, update or delete
  * information about vehicles, as well as gather related
@@ -65,8 +67,7 @@ public class CarService {
         if (car.getId() != null) {
             return repository.findById(car.getId())
                     .map(carToBeUpdated -> {
-                        carToBeUpdated.setDetails(car.getDetails());
-                        carToBeUpdated.setLocation(car.getLocation());
+                        copyProperties(car, carToBeUpdated);
                         return repository.save(carToBeUpdated);
                     }).orElseThrow(CarNotFoundException::new);
         }
