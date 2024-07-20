@@ -19,12 +19,15 @@ public class Price {
     private String currency;
     private BigDecimal price;
 
-    public Price() {
-    }
 
-    Price(String currency, BigDecimal price) {
+    public Price(Long vehicleId, String currency, BigDecimal price) {
+        this.vehicleId = vehicleId;
         this.currency = currency;
         this.price = price;
+    }
+
+    public Price() {
+
     }
 
     public String getCurrency() {

@@ -7,6 +7,7 @@ import com.udacity.vehicles.domain.car.CarRepository;
 import java.util.List;
 import java.util.Optional;
 
+import com.udacity.vehicles.domain.manufacturer.ManufacturerRepository;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,11 +19,13 @@ import org.springframework.stereotype.Service;
 public class CarService {
 
     private final CarRepository repository;
+    private final ManufacturerRepository manufacturerRepository;
     private final PriceClient priceClient;
     private final MapsClient mapsClient;
 
-    public CarService(CarRepository repository, PriceClient priceClient, MapsClient mapsClient) {
+    public CarService(CarRepository repository, ManufacturerRepository manufacturerRepository, PriceClient priceClient, MapsClient mapsClient) {
         this.repository = repository;
+        this.manufacturerRepository = manufacturerRepository;
         this.priceClient = priceClient;
         this.mapsClient = mapsClient;
     }
@@ -66,6 +69,11 @@ public class CarService {
                         carToBeUpdated.setLocation(car.getLocation());
                         return repository.save(carToBeUpdated);
                     }).orElseThrow(CarNotFoundException::new);
+        }
+        if(!manufacturerRepository.existsById(
+                car.getDetails().getManufacturer().getCode())
+        ) {
+            manufacturerRepository.save(car.getDetails().getManufacturer());
         }
 
         return repository.save(car);
